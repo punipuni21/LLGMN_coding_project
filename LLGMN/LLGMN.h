@@ -42,18 +42,11 @@ public:
 
 	vector<vector<vector<double>>> weight_;
 	vector<double> progress_;//log
-	//vector<vector<double>> training_data_;//(バッチサイズ，次元...)
-	//vector<vector<double>> training_label_;//(バッチサイズ，次元...)
 
 	vector<vector<double>> input_layer_;
 	vector<vector<vector<double>>> mid_layer_input_;
 	vector<vector<vector<double>>> mid_layer_output_;
 	vector<vector<double>> output_layer_;
-
-	//auto input_layer = make_v<double>(data_siz + 10, 0);//非線形処理した入力層の入力次元
-	//auto mid_layer_input = make_v<double>(data_siz + 5, class_siz + 5, maxi_component_siz + 5);//各層の入力値
-	//auto mid_layer_output = make_v<double>(data_siz + 5, class_siz + 5, maxi_component_siz + 5);//各層の出力値
-	//auto output_layer = make_v<double>(data_siz + 10, class_siz + 10);//出力層の各クラスの出力値（事後確率）
 
 	//教師データ：(バッチサイズ，次元...)
 	//正解ラベル：(バッチサイズ，次元...)※まずはone-hotで実装すること
@@ -70,8 +63,6 @@ public:
 		data_size_ = data_size;
 		non_linear_input_siz_ = 1 + input_dim * (input_dim + 3) / 2;
 		weight_ = make_v<double>(non_linear_input_siz_ + 10, class_num_ + 5, component_size_ + 5);//重み係数
-		//training_data_ = make_v<double>(data_size_, input_dim_);
-		//training_label_ = make_v<double>(data_size_, class_num_);
 
 		input_layer_ = make_v<double>(data_size_ + 10, 0);
 		mid_layer_input_ = make_v<double>(data_size_ + 5, class_num_ + 5, component_size_ + 5);
@@ -116,16 +107,15 @@ public:
 
 			backward(training_data, training_label);
 
-
-
-
 			flag = false;
 		}
 
 		//ログの出力
-
+		
 
 		//重みの保存など
+
+
 	}
 
 
@@ -250,9 +240,7 @@ public:
 		if (true)
 		{
 			lr_ = pow(log_likelihood_, 1 - beta) / (epochs_ * (1 - beta));
-			//cout << lr_ << " " << log_likelihood_ << endl;
 		}
-
 	}
 
 	void backward(vector<vector<double>>& training_data, vector<vector<double>>& training_label) {

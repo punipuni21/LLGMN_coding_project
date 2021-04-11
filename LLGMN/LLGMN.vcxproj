@@ -152,7 +152,6 @@
     <ClCompile Include="in_out.cpp" />
     <ClCompile Include="learning.cpp" />
     <ClCompile Include="LLGMN.cpp" />
-    <ClCompile Include="LLGMN2.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -103,6 +103,9 @@ public:
 			forward(training_data, training_label, flag);
 
 			cout << "epoch: " << i << " log_likelihood= " << log_likelihood_ << " lr= " << lr_ << endl;
+
+			calc_accuracy();
+
 			//backward
 
 			backward(training_data, training_label);
@@ -112,10 +115,13 @@ public:
 
 		//ログの出力
 		
+		save_confufion_matrix();
+
+		save_log();
 
 		//重みの保存など
 
-
+		save_weight();
 	}
 
 
@@ -309,6 +315,29 @@ public:
 
 	}
 
+
+	void calc_accuracy() {
+
+		//正解率の算出
+
+	}
+
+	void save_weight() {
+
+		//重みの保存
+
+	}
+
+	void save_confusuin_matrix() {
+
+		//混同行列の計算，保存
+	}
+
+	void save_log() {
+
+		//ロスの保存と混同行列の算出，保存
+
+	}
 
 	//重みの初期化
 	void weight_initialize() {

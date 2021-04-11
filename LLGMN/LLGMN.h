@@ -95,7 +95,7 @@ public:
 		bool flag = true;
 
 		for (int i = 0; i < epochs_; i++) {
-
+			cout << "epoch: " << i << endl;
 			//‰Šú‰»
 			double log_likelihood = 0;
 			fill_v(mid_layer_input_, 0);

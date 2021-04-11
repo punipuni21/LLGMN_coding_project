@@ -78,11 +78,16 @@ public:
 		mid_layer_output_ = make_v<double>(data_size_ + 5, class_num_ + 5, component_size_ + 5);
 		output_layer_ = make_v<double>(data_size_ + 10, class_num_ + 10);
 
+		cout << epochs << " " << batch_size_ << " " << input_dim_ << " " << output_dim_ << " " << class_num << " " << component_size_ << endl;
+		cout << non_linear_input_siz_ << endl;
 	}
 
 
 	void train(vector<vector<double>> & training_data, vector<vector<double>> & training_label) {
 
+		weight_initialize();
+		//データは正常に渡されている
+		
 		//今後のTodo
 		//for 最初のデータ数：
 			//for バッチサイズ分：
@@ -106,7 +111,7 @@ public:
 
 			forward(training_data, training_label, flag);
 
-			cout << "epoch: " << i << " log_likelihood= " << log_likelihood_ << endl;
+			cout << "epoch: " << i << " log_likelihood= " << log_likelihood_ << " lr= " << lr_ << endl;
 			//backward
 
 			backward(training_data, training_label);
@@ -239,8 +244,10 @@ public:
 				}
 			}
 		}
+
+		log_likelihood_ /= data_size_;
 		progress_.push_back(log_likelihood_);
-		if (flag)
+		if (true)
 		{
 			lr_ = pow(log_likelihood_, 1 - beta) / (epochs_ * (1 - beta));
 			//cout << lr_ << " " << log_likelihood_ << endl;
@@ -316,7 +323,7 @@ public:
 
 
 	//重みの初期化
-	void value_initialize() {
+	void weight_initialize() {
 
 		// 0.0以上1.0未満の値を等確率で発生させる
 		std::random_device rnd;     // 非決定的な乱数生成器を生成

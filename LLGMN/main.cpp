@@ -265,7 +265,7 @@ int main() {
 
 	//LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num, int component_size, int data_size)
 	cout << data_siz << endl;
-	LLGMN model(study_rate, 5, data_siz, input_siz, output_siz, 4, data_siz);
+	LLGMN model(study_rate, 200, data_siz, input_siz, output_siz, 2, data_siz);
 	model.train(training_data, training_label);
 	
 	return 0;

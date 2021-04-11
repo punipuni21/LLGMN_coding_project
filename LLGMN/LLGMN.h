@@ -68,9 +68,6 @@ public:
 		mid_layer_input_ = make_v<double>(data_size_ + 5, class_num_ + 5, component_size_ + 5);
 		mid_layer_output_ = make_v<double>(data_size_ + 5, class_num_ + 5, component_size_ + 5);
 		output_layer_ = make_v<double>(data_size_ + 10, class_num_ + 10);
-
-		cout << epochs << " " << batch_size_ << " " << input_dim_ << " " << output_dim_ << " " << class_num << " " << component_size_ << endl;
-		cout << non_linear_input_siz_ << endl;
 	}
 
 

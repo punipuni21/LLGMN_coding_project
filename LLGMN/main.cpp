@@ -239,11 +239,11 @@ int main() {
 	
 	//*****************************************************************************************
 	
-	//batch_learning( weight, T_data, each_class_siz, class_siz, input_siz, data_siz, 
-		//maxi_component_siz, /*study_rate,*/ non_linear_input_siz,progress);
+	//cout << non_linear_input_siz << endl;
+	//batch_learning( weight, T_data, each_class_siz, class_siz, input_siz, data_siz, maxi_component_siz, /*study_rate,*/ non_linear_input_siz,progress);
 
 
-	/*for (int i = 0; i < 30; i++)
+	/*for (int i = 0; i < data_siz; i++)
 	{
 		for (int j = 1; j <= input_siz; j++)
 		{
@@ -252,7 +252,7 @@ int main() {
 		cout << endl;
 	}*/
 
-	/*for (int i = 220; i < ; i++)
+	/*for (int i = 0; i < data_siz; i++)
 	{
 		for (int j = 1; j <= class_siz; j++)
 		{
@@ -261,9 +261,10 @@ int main() {
 		cout << endl;
 	}*/
 
-	return 0;
-	//LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num, int component_size, int data_size)
+	//データの読み込みは正常，BP周りをいじったのでその影響の可能性が高い
 
+	//LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num, int component_size, int data_size)
+	cout << data_siz << endl;
 	LLGMN model(study_rate, 5, data_siz, input_siz, output_siz, 4, data_siz);
 	model.train(training_data, training_label);
 	

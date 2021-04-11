@@ -36,7 +36,6 @@ int main() {
 	double cognitive_rate = 0;
 	int success_case = 0;
 
-
 	
 	//***********************************************************************************************************
 	
@@ -46,12 +45,12 @@ int main() {
 
 	//input(name);
 	//input_siz = (int)string_to_double(name);//入力データ数(今回は入力は2個)
-	input_siz = 4;
+	input_siz = 2;
 
 	//printf("出力データ数mを入力してください,なおここでの出力データ数は,Y = [y1,y2,....ym]におけるmである: ");
 	//input(name);
 	//output_siz = (int)string_to_double(name);//出力データ数(今回は入力は4個)
-	output_siz = 2;
+	output_siz = 4;
 
 
 	//printf("学習率を入力してください: ");
@@ -79,7 +78,8 @@ int main() {
 		data_siz += 200;//学習率の設定
 	}
 	
-	
+	auto training_data = make_v<double>(data_siz + 5, input_siz + 1);
+	auto training_label = make_v<double>(data_siz + 5, class_siz + 1);
 
 	//***************************************************************************************************************************************
 	//教師データと未学習データのファイルを先に開いておく
@@ -146,12 +146,14 @@ int main() {
 
 		int cnt = 0;
 		T_data[index].input[0] = 0;//0番目は番兵
+		training_data[index][0] = 0;
 		cnt++;
 
 		// 区切り文字がなくなるまで文字を区切っていく
 		while (getline(stream, tmp, ','))
 		{
 			T_data[index].input[cnt] = stod(tmp);
+			training_data[index][cnt] = stod(tmp);
 			cnt++;
 		}
 		index++;
@@ -167,12 +169,14 @@ int main() {
 
 		int cnt = 0;
 		T_data[index].output[0] = 0;//0番目は番兵
+		training_label[index][0] = 0;
 		cnt++;
 
 		// 区切り文字がなくなるまで文字を区切っていく
 		while (getline(stream, tmp, ','))
 		{
 			T_data[index].output[cnt] = stod(tmp);
+			training_label[index][cnt] = stod(tmp);
 			cnt++;
 		}
 		index++;
@@ -239,8 +243,18 @@ int main() {
 		//maxi_component_siz, /*study_rate,*/ non_linear_input_siz,progress);
 
 
+	/*for (int i = 0; i < 30; i++)
+	{
+		for (int j = 1; j <= input_siz; j++)
+		{
+			cout << training_data[i][j] << " ";
+		}
+		cout << endl;
+	}*/
+
+	return 0;
 	LLGMN model(study_rate, 100, data_siz, input_siz, output_siz, 4, data_siz);
-	model.forward(T_data.input, T_data.output);
+	model.train(training_data, training_label);
 
 	exit(0);
 

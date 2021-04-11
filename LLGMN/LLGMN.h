@@ -112,7 +112,7 @@ public:
 
 		//ログの出力
 		
-		save_confufion_matrix();
+		save_confusion_matrix();
 
 		save_log();
 
@@ -325,7 +325,7 @@ public:
 
 	}
 
-	void save_confusuin_matrix() {
+	void save_confusion_matrix() {
 
 		//混同行列の計算，保存
 	}

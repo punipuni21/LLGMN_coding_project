@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 #include<vector>
 #include<algorithm>
@@ -43,7 +44,7 @@ public:
 	vector<double> progress_;//log
 	//vector<vector<double>> training_data_;//(バッチサイズ，次元...)
 	//vector<vector<double>> training_label_;//(バッチサイズ，次元...)
-	
+
 	vector<vector<double>> input_layer_;
 	vector<vector<vector<double>>> mid_layer_input_;
 	vector<vector<vector<double>>> mid_layer_output_;
@@ -80,7 +81,7 @@ public:
 	}
 
 
-	void train(vector<vector<double>>& training_data, vector<vector<double>>& training_label) {
+	void train(vector<vector<double>> & training_data, vector<vector<double>> & training_label) {
 
 		//今後のTodo
 		//for 最初のデータ数：
@@ -89,7 +90,7 @@ public:
 				//ロスの計算
 				//正解率などの計算
 				//backward
-				
+
 		//とりあえず一括学習で実装して余裕があればバッチサイズを変更できるようにすること
 		bool flag = true;
 
@@ -123,9 +124,9 @@ public:
 		//重みの保存など
 	}
 
-	
-	void forward(vector<vector<double>>& training_data, vector<vector<double>>& training_label, bool flag) {
-		
+
+	void forward(vector<vector<double>> & training_data, vector<vector<double>> & training_label, bool flag) {
+
 		auto exp_num = make_v<double>(data_size_ + 5, class_num_ + 5, component_size_ + 5);//前処理したexpの値
 		fill_v(exp_num, 0);
 
@@ -250,11 +251,11 @@ public:
 
 	void backward() {
 
-		
+
 	}
 
 
-	void eval(vector<vector<double>>& training_data, vector<vector<double>>& training_label) {
+	void eval(vector<vector<double>> & training_data, vector<vector<double>> & training_label) {
 
 		//forward
 

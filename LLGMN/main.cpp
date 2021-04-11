@@ -9,10 +9,11 @@
 #include<random>
 #include<string>
 
-#include"in_out.h";
-#include"macro.h";
-#include"teaching_data.h";
-#include"learning.h";
+#include "in_out.h";
+#include "macro.h";
+#include "teaching_data.h";
+#include "learning.h"; 
+#include "LLGMN.h";
 using namespace std;
 
 int main() {
@@ -34,6 +35,8 @@ int main() {
 	vector<double> progress;//尤度の経過
 	double cognitive_rate = 0;
 	int success_case = 0;
+
+
 	
 	//***********************************************************************************************************
 	
@@ -232,8 +235,14 @@ int main() {
 	
 	//*****************************************************************************************
 	
-	batch_learning( weight, T_data, each_class_siz, class_siz, input_siz, data_siz, 
-		maxi_component_siz, /*study_rate,*/ non_linear_input_siz,progress);
+	//batch_learning( weight, T_data, each_class_siz, class_siz, input_siz, data_siz, 
+		//maxi_component_siz, /*study_rate,*/ non_linear_input_siz,progress);
+
+
+	LLGMN model(study_rate, 100, data_siz, input_siz, output_siz, 4, data_siz);
+	model.forward(T_data.input, T_data.output);
+
+	exit(0);
 
 
 	//学習終了

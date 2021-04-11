@@ -152,13 +152,19 @@
     <ClCompile Include="in_out.cpp" />
     <ClCompile Include="learning.cpp" />
     <ClCompile Include="LLGMN.cpp" />
+    <ClCompile Include="LLGMN2.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="in_out.h" />
     <ClInclude Include="learning.h" />
+    <ClInclude Include="LLGMN.h" />
     <ClInclude Include="macro.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="teaching_data.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="LLGMN.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

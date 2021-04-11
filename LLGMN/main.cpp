@@ -252,7 +252,16 @@ int main() {
 		cout << endl;
 	}*/
 
+	/*for (int i = 220; i < ; i++)
+	{
+		for (int j = 1; j <= class_siz; j++)
+		{
+			cout << training_label[i][j] << " ";
+		}
+		cout << endl;
+	}*/
 
+	return 0;
 	//LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num, int component_size, int data_size)
 
 	LLGMN model(study_rate, 5, data_siz, input_siz, output_siz, 4, data_siz);

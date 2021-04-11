@@ -95,7 +95,6 @@ public:
 		bool flag = true;
 
 		for (int i = 0; i < epochs_; i++) {
-			cout << "epoch: " << i << endl;
 			//初期化
 			double log_likelihood = 0;
 			fill_v(mid_layer_input_, 0);
@@ -107,10 +106,10 @@ public:
 
 			forward(training_data, training_label, flag);
 
-
+			cout << "epoch: " << i << " log_likelihood= " << log_likelihood_ << endl;
 			//backward
 
-			backward();
+			backward(training_data, training_label);
 
 
 
@@ -240,17 +239,69 @@ public:
 				}
 			}
 		}
-
+		progress_.push_back(log_likelihood_);
 		if (flag)
 		{
 			lr_ = pow(log_likelihood_, 1 - beta) / (epochs_ * (1 - beta));
-			cout << lr_ << " " << log_likelihood_ << endl;
+			//cout << lr_ << " " << log_likelihood_ << endl;
 		}
 
 	}
 
-	void backward() {
+	void backward(vector<vector<double>>& training_data, vector<vector<double>>& training_label) {
 
+		double denom = 0.0;
+		double gamma = 0.0;
+
+
+		for (int data_num = 1; data_num <= data_size_; data_num++)
+		{
+			for (int now_node = 1; now_node <= non_linear_input_siz_; now_node++)
+			{
+				for (int class_num = 1; class_num <= class_num_; class_num++)
+				{
+					for (int component_num = 1; component_num <= component_size_; component_num++)
+					{
+						denom += pow((output_layer_[data_num][class_num] - training_label[data_num][class_num])
+							* mid_layer_output_[data_num][class_num][component_num] / output_layer_[data_num][class_num] * input_layer_[data_num][now_node], 2);
+					}
+				}
+			}
+		}
+
+		if (denom == 0)
+		{
+			denom += 1e-8;
+		}
+
+		//ガンマを求めるための分母の前処理
+
+
+		gamma = pow(log_likelihood_, beta) / denom;
+
+
+		//重み係数の更新
+		for (int now_node = 1; now_node <= non_linear_input_siz_; now_node++)
+		{
+			for (int class_num = 1; class_num <= class_num_; class_num++)
+			{
+				for (int component_num = 1; component_num <= component_size_; component_num++)
+				{
+					if (class_num == class_num_ && component_num == component_size_)
+					{
+						continue;
+					}
+					double cnt = 0;
+					for (int data_num = 1; data_num <= data_size_; data_num++)
+					{
+						cnt += (output_layer_[data_num][class_num] - training_label[data_num][class_num])
+							* mid_layer_output_[data_num][class_num][component_num] / output_layer_[data_num][class_num] * input_layer_[data_num][now_node];
+					}
+					weight_[now_node][class_num][component_num] -= lr_ * gamma * cnt;
+
+				}
+			}
+		}
 
 	}
 

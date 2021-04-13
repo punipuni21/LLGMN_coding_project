@@ -236,7 +236,7 @@ int main() {
 	//入力のデバッグ用
 
 	//LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num, int component_size, int data_size)
-	LLGMN model(study_rate, 500, data_siz, input_siz, output_siz, 2, data_siz);
+	LLGMN model(study_rate, 10, data_siz, input_siz, output_siz, 2, data_siz);
 	model.train(training_data, training_label);
 	model.eval(test_data, test_label);
 

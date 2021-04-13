@@ -57,14 +57,17 @@ public:
 	//テストデータでの推論
 	void eval(vector<vector<double>>& test_data, vector<vector<double>>& test_label);
 
+	//出力層の結果の保存
+	void save_result(vector<vector<double>>& test_data, vector<vector<double>>& test_label, vector<vector<double>>& output_layer);
+
 	//正解率の計算
-	void calc_accuracy();
+	double calc_accuracy(vector<vector<double>>& test_label, vector<vector<double>>& output_layer);
 
 	//重みの保存
 	void save_weight();
 
 	//混同行列の算出
-	void save_confusion_matrix();
+	void save_confusion_matrix(vector<vector<double>>& test_label, vector<vector<double>>& output_layer);
 
 	//ログの保存
 	void save_log();

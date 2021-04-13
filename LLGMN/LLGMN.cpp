@@ -47,6 +47,7 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 
 	//とりあえず一括学習で実装して余裕があればバッチサイズを変更できるようにすること
 	bool flag = true;
+	double accuracy = 0;
 
 	for (int i = 0; i < epochs_; i++) {
 		//初期化
@@ -57,7 +58,6 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 
 
 		//forward
-
 		forward(training_data, training_label);
 		progress_.push_back(log_likelihood_);
 
@@ -68,10 +68,7 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 
 		cout << "epoch: " << i << " log_likelihood= " << log_likelihood_ << " lr= " << lr_ << endl;
 
-		calc_accuracy();
-
 		//backward
-
 		backward(training_data, training_label);
 
 		flag = false;
@@ -276,35 +273,26 @@ void LLGMN::eval(vector<vector<double>>& test_data, vector<vector<double>>& test
 
 	//forward
 
-	/*for (int i = 0; i < 30; i++)
-	{
-		for (int j = 1; j <= input_dim_; j++)
-		{
-			cout << test_data[i][j] << " ";
-		}
-		cout << endl;
-	}
-
-	for (int i = 0; i < 30; i++)
-	{
-		for (int j = 1; j <= class_num_; j++)
-		{
-			cout << test_label[i][j] << " ";
-		}
-		cout << endl;
-	}*/
-
-
-
-	double log_likelihood = 0;
 	fill_v(mid_layer_input_, 0);
 	fill_v(mid_layer_output_, 0);
 	fill_v(output_layer_, 0);
-	int success_case = 0;
+	double accuracy = 0;
 
+	//forward
+	forward(test_data, test_label);
+
+	save_result(test_data, test_label, output_layer_);
+
+	accuracy = calc_accuracy(test_label, output_layer_);
+	//正解率，混同行列の算出など
+
+	save_confusion_matrix(test_label, output_layer_);
+
+}
+
+void LLGMN::save_result(vector<vector<double>>& test_data, vector<vector<double>>& test_label, vector<vector<double>>& output_layer) {
 
 	ofstream ofs("test_output.csv");
-
 
 	if (ofs.fail())
 	{
@@ -312,14 +300,22 @@ void LLGMN::eval(vector<vector<double>>& test_data, vector<vector<double>>& test
 		exit(1);
 	}
 
-	//forward
-	forward(test_data, test_label);
-
+	for (int i = 0; i < input_dim_; i++)
+	{
+		ofs << "dim" << i << ",";
+	}
+	ofs << ",";
+	for (int i = 0; i < class_num_; i++)
+	{
+		ofs << "class" << i << ",";
+	}
+	ofs << ",";
+	ofs << "class_label" << endl;
 
 	for (int data_num = 1; data_num <= data_size_; data_num++)
 	{
 		//入力データ（未学習）
-		for (int input_num = 1; input_num  <= input_dim_ ; input_num ++)
+		for (int input_num = 1; input_num <= input_dim_; input_num++)
 		{
 			ofs << test_data[data_num][input_num] << ",";
 		}
@@ -327,38 +323,46 @@ void LLGMN::eval(vector<vector<double>>& test_data, vector<vector<double>>& test
 		int idx = 0;
 		ofs << " " << ",";
 		//出力値
-		for (int class_num = 1;class_num <= class_num_; class_num++)
+		for (int class_num = 1; class_num <= class_num_; class_num++)
 		{
-			ofs << output_layer_[data_num][class_num] << ",";
+			ofs << output_layer[data_num][class_num] << ",";
+			if (maxi < output_layer[data_num][class_num])
+			{
+				maxi = output_layer[data_num][class_num];
+				idx = class_num;
+			}
+		}
+		//識別したクラス
+		ofs << "," << idx << endl;
+	}
+}
+
+
+double LLGMN::calc_accuracy(vector<vector<double>>& test_label, vector<vector<double>>& output_layer) {
+
+	//正解率の算出
+	double maxi = 0;
+	int idx = 0;
+	int success_case = 0;
+	for (int data_num = 1; data_num <= data_size_; data_num++)
+	{
+		double maxi = 0;
+		int idx = 0;
+		//出力値
+		for (int class_num = 1; class_num <= class_num_; class_num++)
+		{
 			if (maxi < output_layer_[data_num][class_num])
 			{
 				maxi = output_layer_[data_num][class_num];
 				idx = class_num;
 			}
 		}
-		//識別したクラス
-		ofs << idx;
-		ofs << endl;
-
 		if (test_label[data_num][idx] == 1)
 		{
 			success_case++;
 		}
 	}
-
-	cout << "識別率 =" << success_case / (double)data_size_ << endl;
-	ofs << "識別率 =," << success_case / (double)data_size_ << endl;
-
-	//正解率，混同行列の算出など
-
-}
-
-
-
-void LLGMN::calc_accuracy() {
-
-	//正解率の算出
-
+	return success_case / (double)data_size_;
 }
 
 
@@ -369,7 +373,7 @@ void LLGMN::save_weight() {
 }
 
 
-void LLGMN::save_confusion_matrix() {
+void LLGMN::save_confusion_matrix(vector<vector<double>>& test_label, vector<vector<double>>& output_layer) {
 
 	//混同行列の計算，保存
 }

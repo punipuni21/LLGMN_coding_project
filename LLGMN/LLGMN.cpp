@@ -40,8 +40,7 @@ LLGMN::LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num
 void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>& training_label) {
 
 	weight_initialize();
-	//データは正常に渡されている
-
+	
 	//今後のTodo
 	//for 最初のデータ数：
 		//for バッチサイズ分：
@@ -395,6 +394,7 @@ double LLGMN::calc_accuracy(vector<vector<double>>& test_label, vector<vector<do
 void LLGMN::save_weight() {
 
 	//重みの保存
+
 
 }
 

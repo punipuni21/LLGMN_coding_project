@@ -76,8 +76,6 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 
 	//ログの出力
 
-	save_confusion_matrix();
-
 	save_log();
 
 	//重みの保存など
@@ -312,6 +310,8 @@ void LLGMN::save_result(vector<vector<double>>& test_data, vector<vector<double>
 	ofs << ",";
 	ofs << "class_label" << endl;
 
+	int success_case = 0;
+
 	for (int data_num = 1; data_num <= data_size_; data_num++)
 	{
 		//入力データ（未学習）
@@ -321,8 +321,8 @@ void LLGMN::save_result(vector<vector<double>>& test_data, vector<vector<double>
 		}
 		double maxi = 0;
 		int idx = 0;
-		ofs << " " << ",";
 		//出力値
+		ofs << " " << ",";
 		for (int class_num = 1; class_num <= class_num_; class_num++)
 		{
 			ofs << output_layer[data_num][class_num] << ",";
@@ -332,9 +332,17 @@ void LLGMN::save_result(vector<vector<double>>& test_data, vector<vector<double>
 				idx = class_num;
 			}
 		}
+
+		//事後確率最大のクラスがone-hot表現で1が立っていた場合
+		if (test_label[data_num][idx] == 1)
+		{
+			success_case++;
+		}
 		//識別したクラス
 		ofs << "," << idx << endl;
 	}
+
+	ofs << "識別率 =," << success_case / (double)data_size_ << endl;
 }
 
 

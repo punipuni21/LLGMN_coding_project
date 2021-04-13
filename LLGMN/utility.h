@@ -2,4 +2,7 @@
 
 #include<string>
 
-string get_current_time();
+//Œ»İ‚Ì‚ğæ“¾
+string get_current_time(string split="");
+
+int make_dir(string s);

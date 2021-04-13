@@ -5,10 +5,12 @@
 #include<ctime>
 #include<random>
 #include<fstream>
-#include <iomanip>
+#include<iomanip>
+#include<direct.h>
 
 #include "macro.h";
-#include "LLGMN.h";
+#include "LLGMN.h"
+#include "utility.h";
 
 //クラスのメンバは末尾にアンダースコアを書くこと
 
@@ -25,6 +27,8 @@ LLGMN::LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num
 	data_size_ = data_size;
 	non_linear_input_siz_ = 1 + input_dim * (input_dim + 3) / 2;
 	weight_ = make_v<double>(non_linear_input_siz_ + 10, class_num_ + 5, component_size_ + 5);//重み係数
+	current_time_ = get_current_time("_");
+	progress_.push_back(0);//1-index
 
 	input_layer_ = make_v<double>(data_size_ + 10, 0);
 	mid_layer_input_ = make_v<double>(data_size_ + 5, class_num_ + 5, component_size_ + 5);
@@ -77,11 +81,11 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 
 	//ログの出力
 
-	save_log();
+	save_loss();
 
 	//重みの保存など
 
-	save_weight();
+	//save_weight();
 }
 
 
@@ -207,8 +211,6 @@ void LLGMN::forward(vector<vector<double>>& training_data, vector<vector<double>
 }
 
 
-
-
 void LLGMN::backward(vector<vector<double>>& training_data, vector<vector<double>>& training_label) {
 
 	double denom = 0.0;
@@ -267,7 +269,6 @@ void LLGMN::backward(vector<vector<double>>& training_data, vector<vector<double
 }
 
 
-
 void LLGMN::eval(vector<vector<double>>& test_data, vector<vector<double>>& test_label) {
 
 	//forward
@@ -285,13 +286,29 @@ void LLGMN::eval(vector<vector<double>>& test_data, vector<vector<double>>& test
 	accuracy = calc_accuracy(test_label, output_layer_);
 	//正解率，混同行列の算出など
 
-	save_confusion_matrix(test_label, output_layer_);
+	//save_confusion_matrix(test_label, output_layer_);
 
 }
 
+
 void LLGMN::save_result(vector<vector<double>>& test_data, vector<vector<double>>& test_label, vector<vector<double>>& output_layer) {
 
-	ofstream ofs("test_output.csv");
+	if (is_current_time_exist_) {
+		//既に結果保存用ディレクトリが作成されている．
+		cout << "既に作成されています．" << endl;
+	}
+	else {
+		if (make_dir(current_time_)) {
+			cout << "ディレクトリ" << current_time_ << "を作成しました" << endl;
+			is_current_time_exist_ = true;
+		}
+		else {
+			cout << "ディレクトリ" << current_time_ << "を作成できませんでした" << endl;
+		}
+	}
+
+	//ロスの保存と混同行列の算出，保存
+	ofstream ofs("./" + current_time_ + "/" + current_time_ + "_result.csv");
 
 	if (ofs.fail())
 	{
@@ -388,10 +405,35 @@ void LLGMN::save_confusion_matrix(vector<vector<double>>& test_label, vector<vec
 }
 
 
-void LLGMN::save_log() {
+void LLGMN::save_loss() {
+	
+	if (is_current_time_exist_) {
+		//既に結果保存用ディレクトリが作成されている．
+	}
+	else {
+		if (make_dir(current_time_)) {
+			cout << "ディレクトリ" << current_time_ << "を作成しました" << endl;
+			is_current_time_exist_ = true;
+		}
+		else {
+			cout << "ディレクトリ" << current_time_ << "を作成できませんでした" << endl;
+		}
+	}
 
 	//ロスの保存と混同行列の算出，保存
+	ofstream ofs("./" + current_time_ + "/" + current_time_ + "_loss.csv");
 
+	ofs << "epoch" << "," << "loss" << endl;
+
+	if (ofs.fail())
+	{
+		cout << "failed " << endl;
+		exit(1);
+	}
+	
+	for (int data_num = 1; data_num <= epochs_; data_num++) {
+		ofs << data_num << "," << progress_[data_num] << endl;
+	}
 }
 
 

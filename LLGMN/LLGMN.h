@@ -18,6 +18,7 @@ private:
 
 	const double eps = 1e-5;//対数尤度の許容値
 	const double beta = 0.2;//定数
+	bool is_current_time_exist_ = false;
 
 	double lr_ = 0.01;
 	int epochs_ = 5;
@@ -29,6 +30,8 @@ private:
 	int non_linear_input_siz_ = 1;
 	int data_size_ = 10;
 	double log_likelihood_ = 0;
+
+	string current_time_ = "";
 
 	vector<vector<vector<double>>> weight_;
 	vector<double> progress_;//log
@@ -71,7 +74,7 @@ public:
 	void save_confusion_matrix(vector<vector<double>>& test_label, vector<vector<double>>& output_layer);
 
 	//ログの保存
-	void save_log();
+	void save_loss();
 
 	//重みの初期化
 	void weight_initialize();

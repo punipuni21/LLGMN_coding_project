@@ -4,6 +4,7 @@
 #include<algorithm>
 #include<ctime>
 #include<random>
+#include<fstream>
 
 #include "macro.h";
 #include "LLGMN.h";
@@ -60,7 +61,7 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 		forward(training_data, training_label);
 		progress_.push_back(log_likelihood_);
 
-		if (true)
+		if (false)
 		{
 			lr_ = pow(log_likelihood_, 1 - beta) / (epochs_ * (1 - beta));
 		}
@@ -299,11 +300,54 @@ void LLGMN::eval(vector<vector<double>>& test_data, vector<vector<double>>& test
 	fill_v(mid_layer_input_, 0);
 	fill_v(mid_layer_output_, 0);
 	fill_v(output_layer_, 0);
+	int success_case = 0;
 
+
+	ofstream ofs("test_output.csv");
+
+
+	if (ofs.fail())
+	{
+		cout << "failed " << endl;
+		exit(1);
+	}
 
 	//forward
-
 	forward(test_data, test_label);
+
+
+	for (int data_num = 1; data_num <= data_size_; data_num++)
+	{
+		//入力データ（未学習）
+		for (int input_num = 1; input_num  <= input_dim_ ; input_num ++)
+		{
+			ofs << test_data[data_num][input_num] << ",";
+		}
+		double maxi = 0;
+		int idx = 0;
+		ofs << " " << ",";
+		//出力値
+		for (int class_num = 1;class_num <= class_num_; class_num++)
+		{
+			ofs << output_layer_[data_num][class_num] << ",";
+			if (maxi < output_layer_[data_num][class_num])
+			{
+				maxi = output_layer_[data_num][class_num];
+				idx = class_num;
+			}
+		}
+		//識別したクラス
+		ofs << idx;
+		ofs << endl;
+
+		if (test_label[data_num][idx] == 1)
+		{
+			success_case++;
+		}
+	}
+
+	cout << "識別率 =" << success_case / (double)data_size_ << endl;
+	ofs << "識別率 =," << success_case / (double)data_size_ << endl;
 
 	//正解率，混同行列の算出など
 

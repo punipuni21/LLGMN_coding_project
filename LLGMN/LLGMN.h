@@ -16,8 +16,7 @@ class LLGMN {
 private:
 
 	const double eps = 1e-5;//‘Î”–Ş“x‚Ì‹–—e’l
-	const double beta = 0.8;//’è”
-	const double sampling_time = 0.001;
+	const double beta = 0.2;//’è”
 
 	double lr_ = 0.01;
 	int epochs_ = 5;

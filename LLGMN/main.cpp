@@ -1,4 +1,4 @@
-﻿#include <iostream>
+﻿#include<iostream>
 #include<vector>
 #include<fstream>
 #include<algorithm>
@@ -56,7 +56,7 @@ int main() {
 	//printf("学習率を入力してください: ");
 	//input(name);
 	//study_rate = string_to_double(name);//学習率の設定
-	study_rate = 0.01;
+	study_rate = 0.1;
 
 	//printf("クラス数を入力してください: ");
 	//input(name);
@@ -236,7 +236,7 @@ int main() {
 	//入力のデバッグ用
 
 	//LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num, int component_size, int data_size)
-	LLGMN model(study_rate, 10, data_siz, input_siz, output_siz, 2, data_siz);
+	LLGMN model(study_rate, 500, data_siz, input_siz, output_siz, 2, data_siz);
 	model.train(training_data, training_label);
 	model.eval(test_data, test_label);
 

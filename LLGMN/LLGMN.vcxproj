@@ -153,6 +153,7 @@
     <ClCompile Include="learning.cpp" />
     <ClCompile Include="LLGMN.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="in_out.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="macro.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="teaching_data.h" />
+    <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="LLGMN.rc" />

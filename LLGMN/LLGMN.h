@@ -4,6 +4,7 @@
 #include<algorithm>
 #include<ctime>
 #include<random>
+#include<string>
 
 #include "macro.h";
 

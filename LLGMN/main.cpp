@@ -8,16 +8,24 @@
 #include<ctime>
 #include<random>
 #include<string>
+#include <iomanip>
 
 #include "in_out.h";
 #include "macro.h";
 #include "teaching_data.h";
 #include "learning.h"; 
 #include "LLGMN.h";
+#include "utility.h";
 using namespace std;
 
 int main() {
 
+
+	string current_time = get_current_time();
+	
+	cout << current_time << endl;
+
+	return 0;
 	//***************************************************************************************************************************
 	//入力データの次元数，出力データの次元数，学習率，データ数
 

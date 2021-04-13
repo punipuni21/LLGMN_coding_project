@@ -17,7 +17,7 @@ class LLGMN {
 private:
 
 	const double eps = 1e-5;//‘Î”–Ş“x‚Ì‹–—e’l
-	const double beta = 0.2;//’è”
+	const double beta = 0.8;//’è”
 	bool is_current_time_exist_ = false;
 
 	double lr_ = 0.01;

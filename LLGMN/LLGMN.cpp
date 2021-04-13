@@ -65,9 +65,9 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 		forward(training_data, training_label);
 		progress_.push_back(log_likelihood_);
 
-		if (false)
-		{
+		if (i == 0) {
 			lr_ = pow(log_likelihood_, 1 - beta) / (epochs_ * (1 - beta));
+			cout << log_likelihood_ << lr_ << endl;
 		}
 
 		cout << "epoch: " << i << " log_likelihood= " << log_likelihood_ << " lr= " << lr_ << endl;
@@ -75,7 +75,7 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 		//backward
 		backward(training_data, training_label);
 
-		flag = false;
+		//flag = false;
 	}
 
 	//ログの出力
@@ -235,12 +235,11 @@ void LLGMN::backward(vector<vector<double>>& training_data, vector<vector<double
 	{
 		denom += 1e-8;
 	}
-
+	denom /= data_size_;
 	//ガンマを求めるための分母の前処理
 
 
 	gamma = pow(log_likelihood_, beta) / denom;
-
 
 	//重み係数の更新
 	for (int now_node = 1; now_node <= non_linear_input_siz_; now_node++)
@@ -282,11 +281,10 @@ void LLGMN::eval(vector<vector<double>>& test_data, vector<vector<double>>& test
 
 	save_result(test_data, test_label, output_layer_);
 
-	accuracy = calc_accuracy(test_label, output_layer_);
-	//正解率，混同行列の算出など
-
+	//accuracy = calc_accuracy(test_label, output_layer_);
+	
+	//混同行列の算出など
 	save_confusion_matrix(test_label, output_layer_);
-
 }
 
 

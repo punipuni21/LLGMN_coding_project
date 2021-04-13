@@ -40,6 +40,7 @@ LLGMN::LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num
 
 void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>& training_label) {
 
+	//重みの初期か
 	weight_initialize();
 	
 	//今後のTodo
@@ -66,7 +67,7 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 		forward(training_data, training_label);
 		progress_.push_back(log_likelihood_);
 
-		if (false) {
+		if (i == 0) {
 			lr_ = pow(log_likelihood_, 1 - beta) / (epochs_ * (1 - beta));
 		}
 
@@ -75,15 +76,12 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 		//backward
 		backward(training_data, training_label);
 
-		//flag = false;
 	}
 
 	//ログの出力
-
 	save_loss();
 
 	//重みの保存など
-
 	save_weight();
 }
 

@@ -56,7 +56,7 @@ public:
 	void backward(vector<vector<double>>& training_data, vector<vector<double>>& training_label);
 
 	//テストデータでの推論
-	void eval(vector<vector<double>>& training_data, vector<vector<double>>& training_label);
+	void eval(vector<vector<double>>& test_data, vector<vector<double>>& test_label);
 
 	//正解率の計算
 	void calc_accuracy();

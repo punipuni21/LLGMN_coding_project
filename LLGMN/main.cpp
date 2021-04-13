@@ -235,20 +235,6 @@ int main() {
 	
 	//入力のデバッグ用
 
-	//以下一括学習を行う
-
-	//****************************************************************************************
-	//学習に使う変数
-	int non_linear_input_siz = 1 + input_siz * (input_siz + 3) / 2;//非線形処理した入力の次元
-	auto weight = make_v<double>(non_linear_input_siz + 10, class_siz + 5, maxi_component_siz + 5);//重み係数
-
-	
-	//*****************************************************************************************
-	
-	//cout << non_linear_input_siz << endl;
-	//batch_learning( weight, T_data, each_class_siz, class_siz, input_siz, data_siz, maxi_component_siz, /*study_rate,*/ non_linear_input_siz,progress);
-
-
 	//LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num, int component_size, int data_size)
 	LLGMN model(study_rate, 10, data_siz, input_siz, output_siz, 2, data_siz);
 	model.train(training_data, training_label);
@@ -284,11 +270,11 @@ int main() {
 
 	cout << "未学習データの識別" << endl;
 
-	forward(NT_data, weight, input_layer, output_layer, mid_layer_input, mid_layer_output, each_class_siz, class_siz, 
-		log_likelihood, non_linear_input_siz, data_siz, maxi_component_siz, input_siz, true, study_rate);
+	//forward(NT_data, weight, input_layer, output_layer, mid_layer_input, mid_layer_output, each_class_siz, class_siz, 
+	//	log_likelihood, non_linear_input_siz, data_siz, maxi_component_siz, input_siz, true, study_rate);
 
 
-	for (int data_num = 1; data_num <= data_siz; data_num++)
+	/*for (int data_num = 1; data_num <= data_siz; data_num++)
 	{
 		//入力データ（未学習）
 		for (int input_num = 1; input_num  <= input_siz ; input_num ++)
@@ -324,5 +310,5 @@ int main() {
 	{
 		ofs << i+1 << "," << progress[i] << endl;
 	}
-
+	*/
 }

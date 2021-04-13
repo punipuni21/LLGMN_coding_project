@@ -271,9 +271,39 @@ void LLGMN::backward(vector<vector<double>>& training_data, vector<vector<double
 
 
 
-void LLGMN::eval(vector<vector<double>>& training_data, vector<vector<double>>& training_label) {
+void LLGMN::eval(vector<vector<double>>& test_data, vector<vector<double>>& test_label) {
 
 	//forward
+
+	/*for (int i = 0; i < 30; i++)
+	{
+		for (int j = 1; j <= input_dim_; j++)
+		{
+			cout << test_data[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+	for (int i = 0; i < 30; i++)
+	{
+		for (int j = 1; j <= class_num_; j++)
+		{
+			cout << test_label[i][j] << " ";
+		}
+		cout << endl;
+	}*/
+
+
+
+	double log_likelihood = 0;
+	fill_v(mid_layer_input_, 0);
+	fill_v(mid_layer_output_, 0);
+	fill_v(output_layer_, 0);
+
+
+	//forward
+
+	forward(training_data, training_label, flag);
 
 	//³‰ð—¦C¬“¯s—ñ‚ÌŽZo‚È‚Ç
 

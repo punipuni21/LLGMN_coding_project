@@ -201,6 +201,7 @@ void LLGMN::forward(vector<vector<double>>& training_data, vector<vector<double>
 	}
 
 	log_likelihood_ /= data_size_;
+
 	progress_.push_back(log_likelihood_);
 	if (true)
 	{

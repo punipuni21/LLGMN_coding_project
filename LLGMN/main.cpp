@@ -80,13 +80,15 @@ int main() {
 	
 	auto training_data = make_v<double>(data_siz + 5, input_siz + 1);
 	auto training_label = make_v<double>(data_siz + 5, class_siz + 1);
+	auto test_data = make_v<double>(data_siz + 5, input_siz + 1);
+	auto test_label = make_v<double>(data_siz + 5, class_siz + 1);
 
 	//***************************************************************************************************************************************
 	//教師データと未学習データのファイルを先に開いておく
 
 
-	vector<teaching_data> T_data(data_siz + 10, teaching_data(input_siz + 10, output_siz + 10));//教師データ配列を用意(念のため大きめに用意)
-	vector<teaching_data> NT_data(data_siz + 10, teaching_data(input_siz + 10, output_siz + 10));//未学習データ配列を用意(念のため大きめに用意)
+	//vector<teaching_data> T_data(data_siz + 10, teaching_data(input_siz + 10, output_siz + 10));//教師データ配列を用意(念のため大きめに用意)
+	//vector<teaching_data> NT_data(data_siz + 10, teaching_data(input_siz + 10, output_siz + 10));//未学習データ配列を用意(念のため大きめに用意)
 	
 	//*************************************************
 	//ファイルを開く
@@ -145,14 +147,14 @@ int main() {
 		istringstream stream(str);
 
 		int cnt = 0;
-		T_data[index].input[0] = 0;//0番目は番兵
+		//T_data[index].input[0] = 0;//0番目は番兵
 		training_data[index][0] = 0;
 		cnt++;
 
 		// 区切り文字がなくなるまで文字を区切っていく
 		while (getline(stream, tmp, ','))
 		{
-			T_data[index].input[cnt] = stod(tmp);
+			//T_data[index].input[cnt] = stod(tmp);
 			training_data[index][cnt] = stod(tmp);
 			cnt++;
 		}
@@ -168,14 +170,14 @@ int main() {
 		istringstream stream(str);
 
 		int cnt = 0;
-		T_data[index].output[0] = 0;//0番目は番兵
+		//T_data[index].output[0] = 0;//0番目は番兵
 		training_label[index][0] = 0;
 		cnt++;
 
 		// 区切り文字がなくなるまで文字を区切っていく
 		while (getline(stream, tmp, ','))
 		{
-			T_data[index].output[cnt] = stod(tmp);
+			//T_data[index].output[cnt] = stod(tmp);
 			training_label[index][cnt] = stod(tmp);
 			cnt++;
 		}
@@ -191,13 +193,15 @@ int main() {
 		istringstream stream(str);
 
 		int cnt = 0;
-		NT_data[index].input[0] = 0;//0番目は番兵
+		test_data[index][0] = 0;
+		//NT_data[index].input[0] = 0;//0番目は番兵
 		cnt++;
 
 		// 区切り文字がなくなるまで文字を区切っていく
 		while (getline(stream, tmp, ','))
 		{
-			NT_data[index].input[cnt] = stod(tmp);
+			test_data[index][cnt] = stod(tmp);
+			//NT_data[index].input[cnt] = stod(tmp);
 			cnt++;
 		}
 		index++;
@@ -213,13 +217,15 @@ int main() {
 		istringstream stream(str);
 
 		int cnt = 0;
-		NT_data[index].output[0] = 0;//0番目は番兵
+		//NT_data[index].output[0] = 0;//0番目は番兵
+		test_label[index][0] = 0;
 		cnt++;
 
 		// 区切り文字がなくなるまで文字を区切っていく
 		while (getline(stream, tmp, ','))
 		{
-			NT_data[index].output[cnt] = stod(tmp);
+			//NT_data[index].output[cnt] = stod(tmp);
+			test_label[index][cnt] = stod(tmp);
 			cnt++;
 		}
 		index++;
@@ -246,7 +252,8 @@ int main() {
 	//LLGMN(double lr, int epochs, int batch_size, int input_dim, int class_num, int component_size, int data_size)
 	LLGMN model(study_rate, 10, data_siz, input_siz, output_siz, 2, data_siz);
 	model.train(training_data, training_label);
-	
+	model.eval(test_data, test_label);
+
 	return 0;
 	
 

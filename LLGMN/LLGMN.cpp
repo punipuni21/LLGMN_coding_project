@@ -6,6 +6,7 @@
 #include<random>
 #include<fstream>
 #include<iomanip>
+#include<numeric>
 #include<direct.h>
 
 #include "macro.h";
@@ -65,9 +66,8 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 		forward(training_data, training_label);
 		progress_.push_back(log_likelihood_);
 
-		if (i == 0) {
+		if (false) {
 			lr_ = pow(log_likelihood_, 1 - beta) / (epochs_ * (1 - beta));
-			cout << log_likelihood_ << lr_ << endl;
 		}
 
 		cout << "epoch: " << i << " log_likelihood= " << log_likelihood_ << " lr= " << lr_ << endl;
@@ -86,8 +86,6 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 
 	save_weight();
 }
-
-
 
 
 void LLGMN::forward(vector<vector<double>>& training_data, vector<vector<double>>& training_label) {
@@ -235,7 +233,7 @@ void LLGMN::backward(vector<vector<double>>& training_data, vector<vector<double
 	{
 		denom += 1e-8;
 	}
-	denom /= data_size_;
+	//denom /= data_size_;
 	//ƒKƒ“ƒ}‚ð‹‚ß‚é‚½‚ß‚Ì•ª•ê‚Ì‘Oˆ—
 
 
@@ -523,6 +521,69 @@ void LLGMN::save_confusion_matrix(vector<vector<double>>& test_label, vector<vec
 		}
 		ofs << endl;
 	}
+	ofs << endl;
+
+	//Recall, Precision, F1-measure‚È‚Ç‚ðŽZo
+	
+	vector<double> Recall(class_num_ + 1, 0), Precision(class_num_ + 1, 0), F1_measure(class_num_ + 1, 0);
+
+	for (int i = 1; i <= class_num_; i++)
+	{
+		int TP = 0, FN = 0, FP = 0;
+		//Recall
+		for (int j = 1; j <= class_num_; j++)
+		{
+			if (i == j) {
+				TP += confusion_matrix[i][j];
+			}
+			else {
+				FN += confusion_matrix[i][j];
+			}
+		}
+		Recall[i] = TP / (double)(TP + FN);
+		//Precision
+		TP = 0, FN = 0, FP = 0;
+		for (int j = 1; j <= class_num_; j++)
+		{
+			if (i == j) {
+				TP += confusion_matrix[j][i];
+			}
+			else {
+				FP += confusion_matrix[j][i];
+			}
+		}
+		Precision[i] = TP / (double)(TP + FP);
+
+		F1_measure[i] = 2 * Precision[i] * Recall[i] / (double)(Precision[i] + Recall[i]);
+	}
+
+	ofs << ",";
+	for (int i = 1; i <= class_num_; i++)
+	{
+		ofs << "class " << i << ",";
+	}
+	ofs << "average" << endl;
+	ofs << "Recall,";
+	for (int i = 1; i <= class_num_; i++)
+	{
+		ofs << Recall[i] << ",";
+	}
+
+	ofs << accumulate(Recall.begin(), Recall.end(), 0.0) / (double)class_num_ << endl;
+
+	ofs << "Precision,";
+	for (int i = 1; i <= class_num_; i++)
+	{
+		ofs << Precision[i] << ",";
+	}
+	ofs << accumulate(Precision.begin(), Precision.end(), 0.0) / (double)class_num_ << endl;
+
+	ofs << "F1-measure,";
+	for (int i = 1; i <= class_num_; i++)
+	{
+		ofs << F1_measure[i] << ",";
+	}
+	ofs << accumulate(F1_measure.begin(), F1_measure.end(), 0.0) / (double)class_num_ << endl;
 }
 
 

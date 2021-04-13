@@ -57,7 +57,13 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 
 		//forward
 
-		forward(training_data, training_label, flag);
+		forward(training_data, training_label);
+		progress_.push_back(log_likelihood_);
+
+		if (true)
+		{
+			lr_ = pow(log_likelihood_, 1 - beta) / (epochs_ * (1 - beta));
+		}
 
 		cout << "epoch: " << i << " log_likelihood= " << log_likelihood_ << " lr= " << lr_ << endl;
 
@@ -84,7 +90,7 @@ void LLGMN::train(vector<vector<double>>& training_data, vector<vector<double>>&
 
 
 
-void LLGMN::forward(vector<vector<double>>& training_data, vector<vector<double>>& training_label, bool flag) {
+void LLGMN::forward(vector<vector<double>>& training_data, vector<vector<double>>& training_label) {
 
 	auto exp_num = make_v<double>(data_size_ + 5, class_num_ + 5, component_size_ + 5);//前処理したexpの値
 	fill_v(exp_num, 0);
@@ -201,12 +207,6 @@ void LLGMN::forward(vector<vector<double>>& training_data, vector<vector<double>
 	}
 
 	log_likelihood_ /= data_size_;
-
-	progress_.push_back(log_likelihood_);
-	if (true)
-	{
-		lr_ = pow(log_likelihood_, 1 - beta) / (epochs_ * (1 - beta));
-	}
 }
 
 
@@ -303,7 +303,7 @@ void LLGMN::eval(vector<vector<double>>& test_data, vector<vector<double>>& test
 
 	//forward
 
-	forward(training_data, training_label, flag);
+	forward(test_data, test_label);
 
 	//正解率，混同行列の算出など
 

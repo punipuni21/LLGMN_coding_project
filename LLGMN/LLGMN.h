@@ -50,7 +50,7 @@ public:
 	void train(vector<vector<double>>& training_data, vector<vector<double>>& training_label);
 
 	//‹t•ûŒüŒvZ
-	void forward(vector<vector<double>>& training_data, vector<vector<double>>& training_label, bool flag);
+	void forward(vector<vector<double>>& training_data, vector<vector<double>>& training_label);
 
 	//Œë·‹t“`”d
 	void backward(vector<vector<double>>& training_data, vector<vector<double>>& training_label);
